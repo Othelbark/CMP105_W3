@@ -32,40 +32,7 @@ Level::~Level()
 // handle user input
 void Level::handleInput(float dt)
 {
-	//Find player x and y speed scales
-	playerXSpeedScale = 0;
-	playerYSpeedScale = 0;
-
-	//right
-	if (input->isKeyDown(sf::Keyboard::Right) || input->isKeyDown(sf::Keyboard::D))
-	{
-		playerXSpeedScale += 1;
-	}
-	//left
-	if (input->isKeyDown(sf::Keyboard::Left) || input->isKeyDown(sf::Keyboard::A))
-	{
-		playerXSpeedScale -= 1;
-	}
-	//down
-	if (input->isKeyDown(sf::Keyboard::Down) || input->isKeyDown(sf::Keyboard::S))
-	{
-		playerYSpeedScale += 1;
-	}
-	//up
-	if (input->isKeyDown(sf::Keyboard::Up) || input->isKeyDown(sf::Keyboard::W))
-	{
-		playerYSpeedScale -= 1;
-	}
-	
-	//diagonal
-	if (playerXSpeedScale != 0 && playerYSpeedScale != 0)
-	{
-		float root2 = 1.41421356;
-		playerXSpeedScale /= root2;
-		playerYSpeedScale /= root2;
-	}
-
-
+	handlePlayerInput();
 
 	//escape to quit
 	if (input->isKeyDown(sf::Keyboard::Escape))
@@ -80,44 +47,8 @@ void Level::update(float dt)
 	//player movement
 	player.move(playerSpeed * dt * playerXSpeedScale, playerSpeed * dt * playerYSpeedScale);
 
-	// SECTION: player stop at edge
-
-	//find window size and player posistion
-	float xSize = window->getSize().x;
-	float ySize = window->getSize().y;
-	float playerXPos = player.getPosition().x;
-	float playerYPos = player.getPosition().y;
-
-	// If player has passed the right side
-	if (playerXPos > xSize)
-	{
-		//dont go off the side
-		player.setPosition(xSize, playerYPos);
-	}
-	// If player has passed the left side
-	else if (playerXPos < 0)
-	{
-		//dont go off the side
-		player.setPosition(0, playerYPos);
-	}
-
-	//check if x value changed
-	playerXPos = player.getPosition().x;
-
-	// If player has passed the bottom side
-	if (playerYPos > ySize)
-	{
-		//dont go off the side
-		player.setPosition(playerXPos, ySize);
-	}
-	// If player has passed the left side
-	else if (playerYPos < 0)
-	{
-		//dont go off the side
-		player.setPosition(playerXPos, 0);
-	}
-
-	//END: player stop at edge
+	//stop player at edge
+	stopCircleAtEdge(player);
 	
 
 	//Circle
@@ -163,4 +94,78 @@ void Level::beginDraw()
 void Level::endDraw()
 {
 	window->display();
+}
+
+void Level::handlePlayerInput()
+{
+	//Find player x and y speed scales
+	playerXSpeedScale = 0;
+	playerYSpeedScale = 0;
+
+	//right
+	if (input->isKeyDown(sf::Keyboard::Right) || input->isKeyDown(sf::Keyboard::D))
+	{
+		playerXSpeedScale += 1;
+	}
+	//left
+	if (input->isKeyDown(sf::Keyboard::Left) || input->isKeyDown(sf::Keyboard::A))
+	{
+		playerXSpeedScale -= 1;
+	}
+	//down
+	if (input->isKeyDown(sf::Keyboard::Down) || input->isKeyDown(sf::Keyboard::S))
+	{
+		playerYSpeedScale += 1;
+	}
+	//up
+	if (input->isKeyDown(sf::Keyboard::Up) || input->isKeyDown(sf::Keyboard::W))
+	{
+		playerYSpeedScale -= 1;
+	}
+
+	//diagonal
+	if (playerXSpeedScale != 0 && playerYSpeedScale != 0)
+	{
+		float root2 = 1.41421356;
+		playerXSpeedScale /= root2;
+		playerYSpeedScale /= root2;
+	}
+}
+
+void Level::stopCircleAtEdge(sf::CircleShape &object)
+{
+	//find window size and player posistion
+	float xSize = window->getSize().x;
+	float ySize = window->getSize().y;
+	float objectXPos = object.getPosition().x;
+	float objectYPos = object.getPosition().y;
+
+	// If player has passed the right side
+	if (objectXPos > xSize)
+	{
+		//dont go off the side
+		object.setPosition(xSize, objectYPos);
+	}
+	// If player has passed the left side
+	else if (objectXPos < 0)
+	{
+		//dont go off the side
+		object.setPosition(0, objectYPos);
+	}
+
+	//check if x value changed
+	objectXPos = object.getPosition().x;
+
+	// If player has passed the bottom side
+	if (objectYPos > ySize)
+	{
+		//dont go off the side
+		object.setPosition(objectXPos, ySize);
+	}
+	// If player has passed the left side
+	else if (objectYPos < 0)
+	{
+		//dont go off the side
+		object.setPosition(objectXPos, 0);
+	}
 }

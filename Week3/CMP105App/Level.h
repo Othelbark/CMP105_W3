@@ -25,6 +25,8 @@ private:
 	Input* input;
 
 	// Objects
+	void stopCircleAtEdge(sf::CircleShape &object);
+
 	sf::CircleShape circle;
 	float circleSpeed;
 	bool movingRight;
@@ -33,4 +35,5 @@ private:
 	float playerSpeed;
 	float playerXSpeedScale;
 	float playerYSpeedScale;
+	void handlePlayerInput();
 };
