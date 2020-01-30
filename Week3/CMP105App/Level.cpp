@@ -26,8 +26,9 @@ Level::Level(sf::RenderWindow* hwnd, Input* in)
 	bouncingCircle.setRadius(8);
 	bouncingCircle.setOrigin(8, 8);
 	bouncingCircle.setPosition(50, 400);
-	bouncingCircleXSpeed = 500;
-	bouncingCircleYSpeed = 100;
+	bouncingCircleXSpeed = 400;
+	bouncingCircleYSpeed = -170;
+	bouncingCircleSpeedScale = 1;
 
 }
 
@@ -39,6 +40,15 @@ Level::~Level()
 // handle user input
 void Level::handleInput(float dt)
 {
+	if (input->isKeyDown(sf::Keyboard::PageUp))
+	{
+		bouncingCircleSpeedScale += (1 * dt);
+	}
+	else if (input->isKeyDown(sf::Keyboard::PageDown))
+	{
+		bouncingCircleSpeedScale -= (1 * dt);
+	}
+
 	handlePlayerInput();
 
 	//escape to quit
@@ -52,7 +62,7 @@ void Level::handleInput(float dt)
 void Level::update(float dt)
 {
 	// Bouncing Circle
-	bouncingCircle.move(bouncingCircleXSpeed * dt, bouncingCircleYSpeed * dt);
+	bouncingCircle.move(bouncingCircleXSpeed * dt * bouncingCircleSpeedScale, bouncingCircleYSpeed * dt * bouncingCircleSpeedScale);
 
 	//bounce off edge
 	if (bouncingCircle.getPosition().x > window->getSize().x || bouncingCircle.getPosition().x < 0)

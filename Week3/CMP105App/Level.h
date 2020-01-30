@@ -40,4 +40,5 @@ private:
 	sf::CircleShape bouncingCircle;
 	float bouncingCircleXSpeed;
 	float bouncingCircleYSpeed;
+	float bouncingCircleSpeedScale;
 };
