@@ -22,6 +22,13 @@ Level::Level(sf::RenderWindow* hwnd, Input* in)
 	playerXSpeedScale = 0;
 	playerYSpeedScale = 0;
 
+	bouncingCircle.setFillColor(sf::Color::Red);
+	bouncingCircle.setRadius(8);
+	bouncingCircle.setOrigin(8, 8);
+	bouncingCircle.setPosition(50, 400);
+	bouncingCircleXSpeed = 500;
+	bouncingCircleYSpeed = 100;
+
 }
 
 Level::~Level()
@@ -44,6 +51,22 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
+	// Bouncing Circle
+	bouncingCircle.move(bouncingCircleXSpeed * dt, bouncingCircleYSpeed * dt);
+
+	//bounce off edge
+	if (bouncingCircle.getPosition().x > window->getSize().x || bouncingCircle.getPosition().x < 0)
+	{
+		bouncingCircleXSpeed *= -1;
+	}
+	if (bouncingCircle.getPosition().y > window->getSize().y || bouncingCircle.getPosition().y < 0)
+	{
+		bouncingCircleYSpeed *= -1;
+	}
+
+	stopCircleAtEdge(bouncingCircle);
+
+
 	//player movement
 	player.move(playerSpeed * dt * playerXSpeedScale, playerSpeed * dt * playerYSpeedScale);
 
@@ -80,6 +103,7 @@ void Level::render()
 
 	window->draw(circle);
 	window->draw(player);
+	window->draw(bouncingCircle);
 
 	endDraw();
 }

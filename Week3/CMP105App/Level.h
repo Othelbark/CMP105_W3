@@ -36,4 +36,8 @@ private:
 	float playerXSpeedScale;
 	float playerYSpeedScale;
 	void handlePlayerInput();
+
+	sf::CircleShape bouncingCircle;
+	float bouncingCircleXSpeed;
+	float bouncingCircleYSpeed;
 };
